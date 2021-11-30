@@ -52,7 +52,7 @@
 		dataMap.set(d[0], d[1]);
       });
       
-      await resetCards(new Map([...dataMap.entries()].sort((a,b)=> a[1]> b[1] ? 1: -1)));
+      await resetCards(dataMap);
 	
       // ModalWindowを閉じる
 //      miro.board.ui.closeModal();
@@ -166,7 +166,7 @@
 						if(frame[0].posx + card.bounds.width > frame[0].x2 - 20){       // Frameの横幅を超ええる場合は改行
 							frame[0].posx = frame[0].x1;
 							frame[0].col = 1;
-							frame[0].posy = frame[0].y1 + ((card.bounds.height+20) * ++frame[0].row);
+							frame[0].posy = frame[0].y + ((card.bounds.height+20) * ++frame[0].row);
 						}else{
 							frame[0].col++;                
 						}
@@ -196,7 +196,7 @@
 			if(frameOut[0].posx + card.bounds.width > frameOut[0].x2 - 20){       // Frameの横幅を超ええる場合は改行
 				frameOut[0].posx = frameOut[0].x1;
 				frameOut[0].col = 1;
-				frameOut[0].posy = frameOut[0].y1 + ((card.bounds.height+20) * ++frameOut[0].row);
+				frameOut[0].posy = frameOut[0].y + ((card.bounds.height+20) * ++frameOut[0].row);
 			}else{
 				frameOut[0].col++;                
 			}
