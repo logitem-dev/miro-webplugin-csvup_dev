@@ -51,7 +51,7 @@
       var notificationMap = new Map();
       
       await datas.forEach(d=> {
-		if(datas[0].startsWidth("*")){
+		if(datas[0].startsWith("*")){
 			// 周知事項
 			var listNotification = [];
 			for(var i=1;i<datas.length;i++){
