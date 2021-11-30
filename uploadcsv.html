@@ -52,7 +52,7 @@
 		dataMap.set(d[0], d[1]);
       });
       
-      await resetCards(dataMap);
+      await resetCards(new Map[...dataMap.engries()].sort((a,b)=> a[1]> b[1] ? 1: -1));
 	
       // ModalWindowを閉じる
 //      miro.board.ui.closeModal();
