@@ -51,11 +51,11 @@
       var notificationMap = new Map();
       
       await datas.forEach(d=> {
-		if(datas[0].startsWith("*")){
+		if(d[0].startsWith("*")){
 			// 周知事項
 			var listNotification = [];
 			for(var i=1;i<datas.length;i++){
-				listNotification.push(datas[i]);
+				listNotification.push(d[i]);
 			}
 			notificationMap.set(d[0],listNotification);
 		  
