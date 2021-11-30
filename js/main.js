@@ -2,22 +2,20 @@ const iconImportCsv = '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/sv
 
 
 miro.onReady(() => {
-  miro.initialize({
-    extensionPoints: {
-      bottomBar: {
-		    }
-//        }
-      },  
-      toolbar: {
-        title: 'CSVｱｯﾌﾟﾛｰﾄﾞ',
-        toolbarSvgIcon: iconImportCsv, 
-        librarySvgIcon: iconImportCsv, 
-        positionPriority: 3,
-        onClick: async () => {
-
-			await miro.board.ui.openModal('uploadcsv.html', { width: 300, height: 200 });
-      }
-    }
-  })  
+	miro.initialize({
+		extensionPoints: {
+			bottomBar: {
+			},  
+			toolbar: {
+				title: 'CSVｱｯﾌﾟﾛｰﾄﾞ',
+				toolbarSvgIcon: iconImportCsv, 
+				librarySvgIcon: iconImportCsv, 
+				positionPriority: 3,
+				onClick: async () => {
+					await miro.board.ui.openModal('uploadcsv.html', { width: 300, height: 200 });
+				}
+			}
+		}
+	})
 })
 
