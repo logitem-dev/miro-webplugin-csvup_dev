@@ -48,18 +48,30 @@
 
       // 出勤フラグでデータを振り分ける
       var dataMap = new Map();
+      var notificationMap = new Map();
+      
       await datas.forEach(d=> {
-		dataMap.set(d[0], d[1]);
+		if(datas[0].startsWidth("*")){
+			// 周知事項
+			var listNotification = [];
+			for(var i=1;i<datas.length;i++){
+				listNotification.push(datas[i]);
+			}
+			notificationMap.set(d[0],listNotification);
+		  
+		}else{
+			dataMap.set(d[0], d[1]);
+		}
       });
       
-      await resetCards(dataMap);
+      await resetCards(dataMap, notificationMap);
 	
       // ModalWindowを閉じる
 //      miro.board.ui.closeModal();
 	
     }
 
-    async function resetCards(dataMap){
+    async function resetCards(dataMap, notificationMap){
 
 	  // Frame用のクラス    
       const frameclass = class{
@@ -78,7 +90,7 @@
     
 
       // 確認メッセージ表示
-      let needToClear = confirm("勤怠ファイルを読み込みボードを初期化します。よろしいですか？");
+      let needToClear = confirm("CSVファイルより配置情報を復元します。よろしいですか？");
 
       if(needToClear){
       
@@ -114,7 +126,7 @@
 		// CSV内の従業員番号をリストへ保持
 		var staffIdList = [];
 		for (const [key, value] of dataMap) {
-		  staffIdList.push(key);
+			staffIdList.push(key);
 		}
 				
 		// CSV内の配置が管理外になっているデータを取得する
@@ -132,7 +144,7 @@
 			var card = allCards[i];
 				        
 			if(i >0 && i % 10 == 0){
-				await sleep(1000);
+				await sleep(10000);
 			}
         
 			var tojson = JSON.stringify(card.metadata);
@@ -156,8 +168,7 @@
 						miro.board.widgets.transformDelta(card, (frame[0].posx+card.bounds.width/2+20)-card.x, (frame[0].posy+card.bounds.height/2+20)-card.y)
 								.catch(error=> {
 									document.body.style.cursor = 'auto';
-									//miro.showNotification('ボードの初期化に失敗しました。');
-									errMessage.innerHTML = "ボードの初期化に失敗しました";
+									errMessage.innerHTML = "配置情報復元に失敗しました。";
 
 								});
 
@@ -183,11 +194,16 @@
     	
     	for(var i=0;i<listOutCard.length;i++){
     		var card = listOutCard[i];
+    		
+			if(i >0 && i % 10 == 0){
+				await sleep(10000);
+			}
+    		
 			miro.board.widgets.transformDelta(card, (frameOut[0].posx+card.bounds.width/2+20)-card.x, (frameOut[0].posy+card.bounds.height/2+20)-card.y)
 					.catch(error=> {
 						document.body.style.cursor = 'auto';
 						//miro.showNotification('ボードの初期化に失敗しました。');
-								errMessage.innerHTML = "ボードの初期化に失敗しました";
+								errMessage.innerHTML = "配置情報復元に失敗しました。";
 
 					});
 
@@ -203,6 +219,38 @@
     		
     		
     	}
+    	
+    	// 周知事項
+		for(var i=0; i<notificationFrames.length;i++){
+			var frame = notificationFrames[i];
+			
+			var notificationList = notificationMap.get(frame.name);
+			
+			for(var j=0;j<notificationList.length;j++){
+				var text = notificationList[j];
+				var sticker = await miro.board.widgets.create({type: 'sticker', "scale":3.0});
+
+				miro.board.widgets.transformDelta(sticker, (frame.posx+sticker.width/2+20)-sticker.x, (frame.posy+sticker.height/2+20)-sticker.y)
+						.catch(error=> {
+							document.body.style.cursor = 'auto';
+							//miro.showNotification('ボードの初期化に失敗しました。');
+									errMessage.innerHTML = "周知事項の復元に失敗しました。";
+
+						});
+				
+				
+				frame.posx = frame.x1 + (sticker.width + 20) * frame.col;
+			  
+				if(frame.posx + sticker.width > frame.x2 - 20){       // Frameの横幅を超ええる場合は改行
+					frame.posx = frame.x1;
+					frame.col = 1;
+					frame.posy = frame.y1 + ((sticker.height+20) * ++frame.row);
+				}else{
+					frame.col++;
+				}
+			}
+			
+		}			      	
         
 
 		document.body.style.cursor = 'auto';
