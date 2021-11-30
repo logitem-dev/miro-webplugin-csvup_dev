@@ -118,6 +118,9 @@
 							);
 
         }
+        
+        // 周知事項フレームの取得
+        let notificationFrames = frameClassList.filter(f=> f.name.indexOf("周知事項") != -1);
 
    		const sleep = waitTime => new Promise( resolve => setTimeout(resolve, waitTime) );
    		
