@@ -235,9 +235,9 @@
 			
 				for(var j=0;j<notificationList.length;j++){
 					var text = notificationList[j];
-					var sticker = await miro.board.widgets.create({type: 'sticker', text:text, "scale":3.0});
+					var sticker = await miro.board.widgets.create({type: 'sticker', text:text, "scale":3.5});
 
-					miro.board.widgets.transformDelta(sticker, (frame.posx+sticker.width/2+20)-sticker.x, (frame.posy+sticker.height/2+20)-sticker.y)
+					miro.board.widgets.transformDelta(sticker.id, (frame.posx+sticker.width/2+20)-sticker.x, (frame.posy+sticker.height/2+20)-sticker.y)
 							.catch(error=> {
 								document.body.style.cursor = 'auto';
 								//miro.showNotification('ボードの初期化に失敗しました。');
@@ -258,7 +258,7 @@
 				}
 			}
 			
-		}			      	
+		}
         
 
 		document.body.style.cursor = 'auto';
