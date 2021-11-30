@@ -237,7 +237,7 @@
 					var text = notificationList[j];
 					var sticker = await miro.board.widgets.create({type: 'sticker', text:text, "scale":3.5});
 
-					miro.board.widgets.transformDelta(sticker[0], (frame.posx+sticker[0].width/2+20)-sticker[0].x, (frame.posy+sticker[0].height/2+20)-sticker[0].y)
+					miro.board.widgets.transformDelta(sticker[0], (frame.posx+sticker[0].bounds.width/2+20)-sticker[0].x, (frame.posy+sticker[0].bounds.height/2+20)-sticker[0].y)
 							.catch(error=> {
 								document.body.style.cursor = 'auto';
 								//miro.showNotification('ボードの初期化に失敗しました。');
@@ -246,12 +246,12 @@
 							});
 					
 					
-					frame.posx = frame.x1 + (sticker[0].width + 20) * frame.col;
+					frame.posx = frame.x1 + (sticker[0].bounds.width + 20) * frame.col;
 				  
-					if(frame.posx + sticker[0].width > frame.x2 - 20){       // Frameの横幅を超ええる場合は改行
+					if(frame.posx + sticker[0].bounds.width > frame.x2 - 20){       // Frameの横幅を超ええる場合は改行
 						frame.posx = frame.x1;
 						frame.col = 1;
-						frame.posy = frame.y1 + ((sticker[0].height+20) * ++frame.row);
+						frame.posy = frame.y1 + ((sticker[0].bounds.height+20) * ++frame.row);
 					}else{
 						frame.col++;
 					}
