@@ -57,7 +57,7 @@
 			for(var i=1;i<datas.length;i++){
 				listNotification.push(d[i]);
 			}
-			notificationMap.set(d[0],listNotification);
+			notificationMap.set(d[0].substring(1),listNotification);
 		  
 		}else{
 			dataMap.set(d[0], d[1]);
