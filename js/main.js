@@ -4,8 +4,8 @@ const iconImportCsv = '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/sv
 miro.onReady(() => {
 	miro.initialize({
 		extensionPoints: {
-			bottomBar: {
-			},  
+//			bottomBar: {
+//			},  
 			toolbar: {
 				title: 'CSVｱｯﾌﾟﾛｰﾄﾞ',
 				toolbarSvgIcon: iconImportCsv, 
