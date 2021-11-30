@@ -55,7 +55,9 @@
 			// 周知事項
 			var listNotification = [];
 			for(var i=1;i<datas.length;i++){
-				listNotification.push(d[i]);
+				if(d[i] != null){
+					listNotification.push(d[i]);
+				}
 			}
 			notificationMap.set(d[0].substring(1),listNotification);
 		  
@@ -229,27 +231,30 @@
 			
 			var notificationList = notificationMap.get(frame.name);
 			
-			for(var j=0;j<notificationList.length;j++){
-				var text = notificationList[j];
-				var sticker = await miro.board.widgets.create({type: 'sticker', "scale":3.0});
+			if(notificationList != null){
+			
+				for(var j=0;j<notificationList.length;j++){
+					var text = notificationList[j];
+					var sticker = await miro.board.widgets.create({type: 'sticker', text:text, "scale":3.0});
 
-				miro.board.widgets.transformDelta(sticker, (frame.posx+sticker.width/2+20)-sticker.x, (frame.posy+sticker.height/2+20)-sticker.y)
-						.catch(error=> {
-							document.body.style.cursor = 'auto';
-							//miro.showNotification('ボードの初期化に失敗しました。');
-									errMessage.innerHTML = "周知事項の復元に失敗しました。";
+					miro.board.widgets.transformDelta(sticker, (frame.posx+sticker.width/2+20)-sticker.x, (frame.posy+sticker.height/2+20)-sticker.y)
+							.catch(error=> {
+								document.body.style.cursor = 'auto';
+								//miro.showNotification('ボードの初期化に失敗しました。');
+										errMessage.innerHTML = "周知事項の復元に失敗しました。";
 
-						});
-				
-				
-				frame.posx = frame.x1 + (sticker.width + 20) * frame.col;
-			  
-				if(frame.posx + sticker.width > frame.x2 - 20){       // Frameの横幅を超ええる場合は改行
-					frame.posx = frame.x1;
-					frame.col = 1;
-					frame.posy = frame.y1 + ((sticker.height+20) * ++frame.row);
-				}else{
-					frame.col++;
+							});
+					
+					
+					frame.posx = frame.x1 + (sticker.width + 20) * frame.col;
+				  
+					if(frame.posx + sticker.width > frame.x2 - 20){       // Frameの横幅を超ええる場合は改行
+						frame.posx = frame.x1;
+						frame.col = 1;
+						frame.posy = frame.y1 + ((sticker.height+20) * ++frame.row);
+					}else{
+						frame.col++;
+					}
 				}
 			}
 			
